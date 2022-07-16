@@ -4,31 +4,29 @@ from antagonistfinder import AntagonistFinder
 import attack_types
 
 
-class SuperHero(attack_types.FireGunMixin):
+class SuperHero(ABC):
 
     def __init__(self, name, can_use_ultimate_attack=True):
         self.name = name
         self.can_use_ultimate_attack = can_use_ultimate_attack
         self.finder = AntagonistFinder()
 
+    @abstractmethod
     def find(self, place):
-        self.finder.get_antagonist(place)
-
-    def attack(self):
-        self.fire_a_gun()
-
-
-class Ultimate(ABC):
+        pass
 
     @abstractmethod
-    def ultimate(self):
+    def attack(self):
         pass
 
 
-class Superman(SuperHero, attack_types.KickMixin, attack_types.LaserMixin, Ultimate):
+class Superman(SuperHero, attack_types.KickMixin, attack_types.LaserMixin, attack_types.Ultimate):
 
     def __init__(self):
-        super(Superman, self).__init__('Clark Kent', True)
+        super().__init__('Clark Kent', True)
+
+    def find(self, place):
+        self.finder.get_antagonist(place)
 
     def attack(self):
         return self.kick()
@@ -37,7 +35,13 @@ class Superman(SuperHero, attack_types.KickMixin, attack_types.LaserMixin, Ultim
         self.incinerate_with_lasers()
 
 
-class ChakNorris(SuperHero, attack_types.KickMixin, attack_types.BumpMixin):
+class ChuckNorris(SuperHero, attack_types.KickMixin, attack_types.FireGunMixin, attack_types.BumpMixin):
 
     def __init__(self):
-        super(ChakNorris, self).__init__('Chak Norris', False)
+        super().__init__('Chuck Norris', False)
+
+    def find(self, place):
+        self.finder.get_antagonist(place)
+
+    def attack(self):
+        return self.fire_a_gun()

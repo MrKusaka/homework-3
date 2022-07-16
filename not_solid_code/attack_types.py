@@ -1,3 +1,6 @@
+from abc import ABC, abstractmethod
+
+
 class FireGunMixin:
 
     @staticmethod
@@ -24,3 +27,10 @@ class KickMixin:
     @staticmethod
     def kick():
         print('Kick')
+
+
+class Ultimate(ABC):
+
+    @abstractmethod
+    def ultimate(self):
+        pass
